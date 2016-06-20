@@ -1,0 +1,70 @@
+<Map background-color="#00000000" srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
+
+  <Style name="tree">
+
+    <!-- zoom level 10 -->
+
+    <Rule>
+      <MinScaleDenominator>50000</MinScaleDenominator>
+      <MarkersSymbolizer allow-overlap="true" stroke="#006600" fill="#006600" height=".1" width=".1"/>
+    </Rule>
+
+    <!-- zoom level 11 -12 -->
+
+    <Rule>
+      <MinScaleDenominator>50000</MinScaleDenominator>
+      <MarkersSymbolizer allow-overlap="true" stroke="#006600" fill="#006600" height=".5" width=".5"/>
+    </Rule>
+
+    <!-- zoom level 13 -->
+
+    <Rule>
+      <MinScaleDenominator>50000</MinScaleDenominator>
+      <MarkersSymbolizer allow-overlap="true" stroke="#006600" fill="#006600" height="1" width="1"/>
+    </Rule>
+
+    <!-- zoom level 14 -->
+
+    <Rule>
+      <MaxScaleDenominator>50000</MaxScaleDenominator>
+      <MinScaleDenominator>25000</MinScaleDenominator>
+      <MarkersSymbolizer allow-overlap="true" stroke="#006600" fill="#006600" height="2" width="2"/>
+    </Rule>
+
+    <!-- zoom level 15-17 -->
+
+    <Rule>
+      <MaxScaleDenominator>25000</MaxScaleDenominator>
+      <MarkersSymbolizer allow-overlap="true" fill="#006600" height="4" width="4"/>
+    </Rule>
+
+    <!-- zoom level 18+ -->
+
+    <Rule>
+      <MaxScaleDenominator>25000</MaxScaleDenominator>
+      <MarkersSymbolizer allow-overlap="true" fill="#006600" height="8" width="8"/>
+    </Rule>
+
+  </Style>
+
+  <Layer name="trees" srs="+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs">
+
+    <StyleName>tree</StyleName>
+
+    <Datasource>
+      <Parameter name="dbname">trees_api</Parameter>
+      <Parameter name="table">
+        (
+          SELECT t.location FROM api_tree AS t
+          JOIN api_propertyset as p ON t.current_propertyset_id = p.id
+          JOIN api_ingest as i ON p.ingest_id = i.id
+          WHERE i.dataset = 'anlagenbaeume'
+        ) as data
+      </Parameter>
+      <Parameter name="type">postgis</Parameter>
+      <Parameter name="user">trees</Parameter>
+      <Parameter name="estimate_extent">false</Parameter>
+    </Datasource>
+
+  </Layer>
+</Map>
